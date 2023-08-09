@@ -1,0 +1,37 @@
+from odoo import fields, models, api
+import locale
+from num2words import num2words
+
+
+class AccountPayment(models.Model):
+    _inherit = 'account.payment'
+
+    cheque_no = fields.Char(string="Cheque No")
+
+    @api.depends('amount', 'amount_withholding')
+    def _compute_total_amount(self):
+        for payment in self:
+            if payment.amount and payment.amount_withholding:
+                total = payment.amount + payment.amount_withholding
+                payment.total_amount = total - payment.amount_withholding
+            elif payment.amount:
+                payment.total_amount = payment.amount
+            else:
+                payment.total_amount = 0
+
+    total_amount = fields.Monetary(string="Total Amount", compute='_compute_total_amount', store=True)
+
+    def get_formatted_total(self):
+        formatted_total = '{:,.2f}'.format(self.total_amount)
+        return f"{self.currency_id.symbol} {formatted_total}"
+
+
+# boolean = fields.Boolean(string='Boolean', compute='cheque_compute', store=True)
+#
+# @api.depends('date')
+# def cheque_compute(self):
+#     for rec in self:
+#         if 'sale' and 'purchase' and 'cash' and 'general' in rec.journal_id.type:
+#             rec.boolean = True
+#         else:
+#             rec.boolean = False

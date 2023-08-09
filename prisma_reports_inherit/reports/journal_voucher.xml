@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--    <template id="journal_voucher_inherit" inherit_id="bi_print_journal_entries.journal_entry_template_report_view">-->
+<!--        <xpath expr="//div[@id='journal_information']" position="after">-->
+
+<!--            <br/>-->
+<!--            <br/>-->
+<!--            <div class="row">-->
+<!--                <div class="col-12">-->
+<!--                    <strong>Description2</strong>&#160;&#160;&#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;<span-->
+<!--                        t-field="o.name"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-1">-->
+<!--                </div>-->
+<!--                <div class="col-11">-->
+<!--                    <div class="col-12" style="background-color:#000000;">-->
+<!--                        <hr/>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </xpath>-->
+<!--    </template>-->
+
+</odoo>

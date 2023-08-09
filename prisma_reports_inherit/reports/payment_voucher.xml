@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payment_voucher_report_doc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!--                         style="font-size: 8pt;font-family:Helvetica,Verdana,Arial,sans,Lucida Grande,Calibri;">-->
+                        <div class="row">
+                            <div class="col-1">
+                            </div>
+                            <div class="col-10">
+                                <h2 align="center">
+                                    <u>Cash / Bank Payment Voucher</u>
+                                </h2>
+                            </div>
+                            <div class="col-1">
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th style="background-color:#ffffff;">Date:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                                t-field="doc.date"/>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th style="background-color:#ffffff;">Voucher NO:&#160;&#160;&#160;<span
+                                                t-field="doc.name"/>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th style="background-color:#ffffff;">Cheque #:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                                t-field="doc.cheque_no"/>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th style="background-color:#ffffff;">Bank Code:&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                                t-field="doc.journal_id.code"/>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-12">
+                                <strong>Pay to</strong>&#160;&#160;&#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                    t-field="doc.partner_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1">
+                            </div>
+                            <div class="col-11">
+                                <div class="col-12" style="background-color:#000000;">
+                                    <hr style="border-color: black; border-width: 1px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center;background-color:#f2f2f2;width:2%;">Sr.No.</th>
+                                    <th style="text-align:center;background-color:#f2f2f2;width:50%;">Details</th>
+                                    <th style="text-align:center;background-color:#f2f2f2;width:20%;">Debit Account</th>
+                                    <th style="text-align:center;background-color:#f2f2f2;width:28%;" colspan="2">Amount
+                                        (Rs.)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <t t-set="i" t-value="1"/>
+                            <!--                            <t t-set="total" t-value="doc.amount - doc.amount_withholding"/>-->
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <span t-esc="i"/>
+                                        <t t-set="i" t-value="i+1"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <t t-if="doc.remarks">
+                                            <span t-esc="doc.remarks or ''"/>,
+                                        </t>
+                                        <span t-esc="doc.ref or ''"/>
+                                    </td>
+                                    <td style="text-align:center;">
+                                        <span t-field="doc.journal_id.name"/>
+                                    </td>
+                                    <td style="text-align:center;width:60%">
+                                        <span t-esc="doc.amount + (doc.amount_withholding if doc.amount_withholding else 0)"/>
+
+                                    </td>
+                                    <td style="text-align:center;width:40%;">
+                                        <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
+                                    </td>
+                                </tr>
+                                <t t-if="doc.amount_withholding">
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <span t-esc="i"/>
+                                            <t t-set="i" t-value="i+2"/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <span>WithHolding Tax</span>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <t t-if="doc.withholding_tax_id">
+                                                <span t-field="doc.withholding_tax_id.invoice_repartition_line_ids[1].account_id.name"/>
+                                            </t>
+                                        </td>
+                                        <td style="text-align:center;width:60%">
+                                            <span t-field="doc.amount_withholding"/>
+                                        </td>
+                                        <td style="text-align:center;width:40%;">
+                                            <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td style="text-align:right;" colspan="3">Total</td>
+                                    <td style="text-align:center;width:60%;">
+                                        <span t-esc="doc.get_formatted_total()"/>
+                                    </td>
+                                    <td style="text-align:center;width:40%;">
+                                        <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-12">
+                                <strong>Rupees in Words:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                        t-field="doc.text_amount"/>
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                            </div>
+                            <div class="col-10">
+                                <div class="col-12" style="background-color:#000000;">
+                                    <hr style="border-color: black; border-width: 1px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <div class="row">
+                                <div class="col-1"/>
+                                <div class="col-2" style="background-color:#000000;">
+                                    <hr style="border-color: black; border-width: 1px;"/>
+                                </div>
+                                <div class="col-1">
+                                </div>
+                                <div class="col-1"/>
+                                <div class="col-2" style="background-color:#000000;">
+                                    <hr style="border-color: black; border-width: 1px;"/>
+                                </div>
+                                <div class="col-1">
+                                </div>
+                                <div class="col-1"/>
+                                <div class="col-2" style="background-color:#000000;">
+                                    <hr style="border-color: black; border-width: 1px;"/>
+                                </div>
+                                <div class="col-1">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4" align="center">
+                                    <b>Prepared By</b>
+                                </div>
+                                <div class="col-4" align="center">
+                                    <b>Approved By</b>
+                                </div>
+                                <div class="col-4" align="center">
+                                    <b>Received By</b>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+
+    </template>
+
+
+    <record id="paperformat_journal_entry" model="report.paperformat">
+        <field name="name">Payment Voucher</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">45</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">40</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <report id="payment_voucher_report"
+            string="Payment Voucher"
+            model="account.payment"
+            report_type="qweb-pdf"
+            paperformat="paperformat_journal_entry"
+            name="prisma_reports_inherit.payment_voucher_report_doc"
+            file="prisma_reports_inherit.payment_voucher_report_doc"/>
+
+
+</odoo>
