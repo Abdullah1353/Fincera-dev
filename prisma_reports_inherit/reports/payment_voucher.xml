@@ -10,9 +10,21 @@
                             <div class="col-1">
                             </div>
                             <div class="col-10">
-                                <h2 align="center">
-                                    <u>Cash / Bank Payment Voucher</u>
-                                </h2>
+                                <t t-if="doc.journal_id.type == 'bank'">
+                                    <h2 align="center">
+                                        <u>Bank Payment Voucher</u>
+                                    </h2>
+                                </t>
+                                <t t-if="doc.journal_id.type == 'cash'">
+                                    <h2 align="center">
+                                        <u>Cash Payment Voucher</u>
+                                    </h2>
+                                </t>
+                                <t t-if="doc.journal_id.type == 'general'">
+                                    <h2 align="center">
+                                        <u>Journal Voucher</u>
+                                    </h2>
+                                </t>
                             </div>
                             <div class="col-1">
                             </div>

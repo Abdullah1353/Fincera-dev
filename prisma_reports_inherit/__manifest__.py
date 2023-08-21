@@ -5,7 +5,7 @@
     'summary': 'Module for manging the prisma reports',
     'sequence': '-100',
     'license': 'AGPL-3',
-    'author': 'Odoo Mates',
+    'author': 'Hasnain Jutt',
     'Maintainer': 'Odoo Mates',
     'website': 'odoomates.com',
     'depends': [
