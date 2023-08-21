@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+        <template id="journal_entry_template_report_view">
+            <t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page">
+                    <br/>
+                    <br/>
+                    <div class="oe_structure"/>
+                    <div>
+                        <h2 class="text-center mb32">
+                            <t t-if="o.journal_id.type == 'bank'">
+                                <t t-if="o.payment_id.payment_type == 'outbound'">
+                                    <strong>Bank Paid Voucher</strong>
+                                </t>
+                                <t t-elif="o.payment_id.payment_type == 'inbound'">
+                                    <strong>Bank Receipt Voucher</strong>
+                                </t>
+                                <t t-else="">
+                                    <strong>Journal Voucher</strong>
+                                </t>
+                            </t>
+                            <t t-if="o.journal_id.type == 'cash'">
+                                <t t-if="o.payment_id.payment_type == 'outbound'">
+                                    <strong>Cash Paid Voucher</strong>
+                                </t>
+                                <t t-elif="o.payment_id.payment_type == 'inbound'">
+                                    <strong>Cash Receipt Voucher</strong>
+                                </t>
+                                <t t-else="">
+                                    <strong>Journal Voucher</strong>
+                                </t>
+                            </t>
+                            <t t-if="o.journal_id.type == 'general'">
+                                <t t-if="o.payment_id.payment_type == 'outbound'">
+                                    <strong>Journal Voucher</strong>
+                                </t>
+                                <t t-elif="o.payment_id.payment_type == 'inbound'">
+                                    <strong>Journal Voucher</strong>
+                                </t>
+                                <t t-else="">
+                                    <strong>Journal Voucher</strong>
+                                </t>
+                            </t>
+                            <!--                            <t t-if="o.journal_id.type == 'sale'">-->
+                            <!--                                <strong>Sale Journal Entry</strong>-->
+                            <!--                            </t>-->
+                            <!--                            <t t-if="o.journal_id.type == 'purchase'">-->
+                            <!--                                <strong>Purchase Journal Entry</strong>-->
+                            <!--                            </t>-->
+                            <!--                            <t t-if="o.journal_id.type == 'cash'">-->
+                            <!--                                <strong>Cash Voucher</strong>-->
+                            <!--                            </t>-->
+                            <!--                            <t t-if="o.journal_id.type == 'bank'">-->
+                            <!--                                <strong>Bank Voucher</strong>-->
+                            <!--                            </t>-->
+                            <!--                            <t t-if="o.journal_id.type == 'general'">-->
+                            <!--                                <strong>Miscellaneous Voucher</strong>-->
+                            <!--                            </t>-->
+                        </h2>
+                    </div>
+                    <br/>
+
+                    <div class="row" id="journal_information">
+                        <div class="col-8">
+                            <div>
+                                <strong>Journal Entry :</strong>
+                                <p t-field="o.name"/>
+                            </div>
+
+                            <div class="text-left">
+                                <strong>Date :</strong>
+                                <p t-field="o.date"/>
+                            </div>
+                        </div>
+
+                        <div class="col-8">
+                            <t t-if="o.journal_id.type in ['bank', 'cash']">
+                                <div>
+                                    <strong>Journal :</strong>
+                                    <p t-field="o.journal_id"/>
+                                </div>
+                            </t>
+                            <div class="text-left">
+                                <strong>Cheque Number :</strong>
+                                <p t-field="o.ref"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>Description</strong>&#160;&#160;&#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                t-field="o.remarks"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-11">
+                            <div class="col-12" style="background-color:#000000;">
+                                <hr style="border-color: black; border-width: 1px;"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <br/>
+                    <table style="border-collapse: collapse;width: 100%;" class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <t t-if="o.company_id.id == 2">
+                                    <th>Partner</th>
+                                </t>
+                                <t t-if="o.company_id.id == 2">
+                                    <th>Account</th>
+                                </t>
+                                <t t-if="o.company_id.id == 2">
+                                    <th>Label</th>
+                                </t>
+                                <t t-if="o.company_id.id == 2">
+                                    <th>Due Date</th>
+                                </t>
+                                <t t-if="o.company_id.id == 2">
+                                    <th>Analytic Account</th>
+                                </t>
+                                <t t-if="o.company_id.id == 2">
+                                    <th>Taxes(%)</th>
+                                </t>
+                                <t t-if="o.company_id.id == 2">
+                                    <th>Debit</th>
+                                </t>
+                                <t t-if="o.company_id.id == 2">
+                                    <th>Credit</th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody class="consumed_tbody">
+                            <t t-set="total" t-value="0.0"/>
+                            <t t-set="total1" t-value="0.0"/>
+                            <t t-foreach="o.line_ids" t-as="line">
+                                <tr>
+                                    <t t-if="o.company_id.id == 2">
+                                        <td>
+                                            <span t-field="line.partner_id"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.company_id.id == 2">
+                                        <td>
+                                            <span t-field="line.account_id"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.company_id.id == 2">
+                                        <td>
+                                            <span t-field="line.account_id"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.company_id.id == 2">
+                                        <td>
+                                            <span t-field="line.date_maturity"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.company_id.id == 2">
+                                        <td>
+                                            <span t-field="line.analytic_account_id"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.company_id.id == 2">
+                                        <td>
+                                            <span t-field="line.tax_ids"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.company_id.id == 2">
+                                        <td>
+                                            <span t-field="line.debit"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.company_id.id == 2">
+                                        <td>
+                                            <span t-field="line.credit"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <!--                                <t t-set="total" t-value="total + line.debit"/>-->
+                                <!--                                <t t-set="total1" t-value="total1 + line.credit"/>-->
+                            </t>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <strong>Total:</strong>
+                                </td>
+                                <td width="10%">
+                                    <strong>
+                                        <span>
+                                            <t t-esc="o.get_credit_total()"/>
+                                        </span>
+                                    </strong>
+                                </td>
+                                <td width="10%">
+                                    <strong>
+                                        <span>
+                                            <t t-esc="o.get_debit_total()"/>
+                                        </span>
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>Rupees in Words:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                    t-field="o.text_amount_credit"/>
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-10">
+                            <div class="col-12" style="background-color:#000000;">
+                                <hr style="border-color: black; border-width: 1px;"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <div class="row">
+                            <div class="col-1"/>
+                            <div class="col-2" style="background-color:#000000;">
+                                <hr style="border-color: black; border-width: 1px;"/>
+                            </div>
+                            <div class="col-1">
+                            </div>
+                            <div class="col-1"/>
+                            <div class="col-2" style="background-color:#000000;">
+                                <hr style="border-color: black; border-width: 1px;"/>
+                            </div>
+                            <div class="col-1">
+                            </div>
+                            <div class="col-1"/>
+                            <div class="col-2" style="background-color:#000000;">
+                                <hr style="border-color: black; border-width: 1px;"/>
+                            </div>
+                            <div class="col-1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4" align="center">
+                                <b>Prepared By</b>
+                            </div>
+                            <div class="col-4" align="center">
+                                <b>Checked By</b>
+                            </div>
+                            <div class="col-4" align="center">
+                                <b>Approved By</b>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="journal_entry_report_template_id">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="bi_print_journal_entries.journal_entry_template_report_view" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
