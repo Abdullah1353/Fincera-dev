@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="po_print_changing_prisma_inherit" inherit_id="prisma_reports_inherit.po_vendor_address_inherit">
+        <xpath expr="//div/t/span[6]" position="after">
+            <t t-if="o.company_id.id == 2">
+                <br/>
+                <span t-field="o.partner_id.ntn1"/>
+                <br/>
+                <span t-field="o.partner_id.stn1"/>
+            </t>
+        </xpath>
+    </template>
+    <template id="po_print_changing" inherit_id="purchase.report_purchaseorder_document">
+        <xpath expr="//div[@t-if='o.date_order']" position="after">
+            <div t-if="o.date_planned" class="col-3 bm-2">
+                <t t-if="o.company_id.id == 2">
+                    <strong>Receipt Date:</strong>
+                    <p t-field="o.date_planned" class="m-0"/>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='informations']" position="before">
+            <t t-if="o.company_id.id == 2">
+                <div t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>Deliver To:&#160;&#160;&#160;</strong>
+                            <span t-field="o.picking_type_id.warehouse_id.partner_id.street"/>
+                            <span t-field="o.picking_type_id.warehouse_id.partner_id.city"/>
+                            <span t-field="o.picking_type_id.warehouse_id.partner_id.state_id"/>
+                            <span t-field="o.picking_type_id.warehouse_id.partner_id.zip"/>
+                            <span t-field="o.picking_type_id.warehouse_id.partner_id.country_id.name"/>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+            </t>
+        </xpath>
+    </template>
+    <template id="po_print_changing_discount" inherit_id="purchase_discount.report_purchaseorder_document">
+        <t t-if="o.company_id.id == 2">
+            <xpath expr="//td[6]" position="replace">
+
+            </xpath>
+        </t>
+        <t t-if="o.company_id.id == 2">
+            <xpath expr="//th[6]" position="replace">
+
+            </xpath>
+        </t>
+
+    </template>
+
+</odoo>
