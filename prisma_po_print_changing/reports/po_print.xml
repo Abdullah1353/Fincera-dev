@@ -37,18 +37,19 @@
             </t>
         </xpath>
     </template>
-    <template id="po_print_changing_discount" inherit_id="purchase_discount.report_purchaseorder_document">
-        <t t-if="o.company_id.id == 2">
-            <xpath expr="//td[6]" position="replace">
+<!--    <template id="po_print_changing_discount" inherit_id="purchase_discount.report_purchaseorder_document">-->
+<!--        <xpath expr="//th[6]" position="replace">-->
+<!--            <t t-if="o.company_id.id == 2">-->
 
-            </xpath>
-        </t>
-        <t t-if="o.company_id.id == 2">
-            <xpath expr="//th[6]" position="replace">
+<!--            </t>-->
 
-            </xpath>
-        </t>
+<!--        </xpath>-->
+<!--        <xpath expr="//td[6]" position="replace">-->
+<!--            <t t-if="o.company_id.id == 2">-->
 
-    </template>
+<!--            </t>-->
+<!--        </xpath>-->
+
+<!--    </template>-->
 
 </odoo>
