@@ -110,110 +110,160 @@
 
                     <br/>
                     <br/>
-                    <table style="border-collapse: collapse;width: 100%;" class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <t t-if="o.company_id.id == 2">
-                                    <th>Partner</th>
-                                </t>
-                                <t t-if="o.company_id.id == 2">
-                                    <th>Account</th>
-                                </t>
-                                <t t-if="o.company_id.id == 2">
-                                    <th>Label</th>
-                                </t>
-                                <t t-if="o.company_id.id == 2">
-                                    <th>Due Date</th>
-                                </t>
-                                <t t-if="o.company_id.id == 2">
-                                    <th>Analytic Account</th>
-                                </t>
-                                <t t-if="o.company_id.id == 2">
-                                    <th>Taxes(%)</th>
-                                </t>
-                                <t t-if="o.company_id.id == 2">
-                                    <th>Debit</th>
-                                </t>
-                                <t t-if="o.company_id.id == 2">
-                                    <th>Credit</th>
-                                </t>
-                            </tr>
-                        </thead>
-                        <tbody class="consumed_tbody">
-                            <t t-set="total" t-value="0.0"/>
-                            <t t-set="total1" t-value="0.0"/>
-                            <t t-foreach="o.line_ids" t-as="line">
+
+                    <t t-if="o.company_id.id == 2">
+                        <t t-set="show_partner_column" t-value="any(line.partner_id for line in o.line_ids)"/>
+                        <t t-set="show_account_column" t-value="any(line.account_id for line in o.line_ids)"/>
+                        <t t-set="show_label_column" t-value="any(line.name for line in o.line_ids)"/>
+                        <t t-set="show_due_date_column" t-value="any(line.date_maturity for line in o.line_ids)"/>
+                        <t t-set="show_analytic_column" t-value="any(line.analytic_account_id for line in o.line_ids)"/>
+                        <t t-set="show_tax_column" t-value="any(line.tax_ids for line in o.line_ids)"/>
+                        <t t-set="show_debit_column" t-value="any(line.debit for line in o.line_ids)"/>
+                        <t t-set="show_credit_column" t-value="any(line.credit for line in o.line_ids)"/>
+
+                        <table style="border-collapse: collapse;width: 100%;" class="table table-condensed">
+                            <thead t-if="show_partner_column or show_account_column or show_label_column or show_due_date_column or show_analytic_column or show_tax_column or show_debit_column or show_credit_column">
                                 <tr>
-                                    <t t-if="o.company_id.id == 2">
+                                    <th t-if="show_partner_column">Partner</th>
+                                    <th t-if="show_account_column">Account</th>
+                                    <th t-if="show_label_column">Label</th>
+                                    <th t-if="show_due_date_column">Due Date</th>
+                                    <th t-if="show_analytic_column">Analytic Account</th>
+                                    <th t-if="show_tax_column">Taxes(%)</th>
+                                    <th t-if="show_debit_column">Debit</th>
+                                    <th t-if="show_credit_column">Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody class="consumed_tbody">
+                                <t t-set="total" t-value="0.0"/>
+                                <t t-set="total1" t-value="0.0"/>
+                                <t t-foreach="o.line_ids" t-as="line">
+                                    <tr>
+                                        <td t-if="show_partner_column">
+                                            <span t-field="line.partner_id"/>
+                                        </td>
+                                        <td t-if="show_account_column">
+                                            <span t-field="line.account_id"/>
+                                        </td>
+                                        <td t-if="show_label_column">
+                                            <span t-field="line.account_id"/>
+                                        </td>
+                                        <td t-if="show_due_date_column">
+                                            <span t-field="line.date_maturity"/>
+                                        </td>
+                                        <td t-if="show_analytic_column">
+                                            <span t-field="line.analytic_account_id"/>
+                                        </td>
+                                        <td t-if="show_tax_column">
+                                            <span t-field="line.tax_ids"/>
+                                        </td>
+                                        <td t-if="show_debit_column">
+                                            <span t-field="line.debit"/>
+                                        </td>
+                                        <td t-if="show_credit_column">
+                                            <span t-field="line.credit"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td t-if="show_partner_column"></td>
+                                    <td t-if="show_account_column"></td>
+                                    <td t-if="show_label_column"></td>
+                                    <td t-if="show_due_date_column"></td>
+                                    <td t-if="show_analytic_column"></td>
+                                    <td t-if="show_tax_column">
+                                        <strong>Total:</strong>
+                                    </td>
+                                    <td t-if="show_debit_column" width="10%">
+                                        <strong>
+                                            <span>
+                                                <t t-esc="o.get_credit_total()"/>
+                                            </span>
+                                        </strong>
+                                    </td>
+                                    <td t-if="show_credit_column" width="10%">
+                                        <strong>
+                                            <span>
+                                                <t t-esc="o.get_debit_total()"/>
+                                            </span>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-if="o.company_id.id != 2">
+                        <table style="border-collapse: collapse;width: 100%;" class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Partner</th>
+                                    <th>Account</th>
+                                    <th>Label</th>
+                                    <th>Due Date</th>
+                                    <th>Analytic Account</th>
+                                    <th>Taxes(%)</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody class="consumed_tbody">
+                                <t t-set="total" t-value="0.0"/>
+                                <t t-set="total1" t-value="0.0"/>
+                                <t t-foreach="o.line_ids" t-as="line">
+                                    <tr>
                                         <td>
                                             <span t-field="line.partner_id"/>
                                         </td>
-                                    </t>
-                                    <t t-if="o.company_id.id == 2">
                                         <td>
                                             <span t-field="line.account_id"/>
                                         </td>
-                                    </t>
-                                    <t t-if="o.company_id.id == 2">
                                         <td>
-                                            <span t-field="line.account_id"/>
+                                            <span t-field="line.name"/>
                                         </td>
-                                    </t>
-                                    <t t-if="o.company_id.id == 2">
                                         <td>
                                             <span t-field="line.date_maturity"/>
                                         </td>
-                                    </t>
-                                    <t t-if="o.company_id.id == 2">
                                         <td>
                                             <span t-field="line.analytic_account_id"/>
                                         </td>
-                                    </t>
-                                    <t t-if="o.company_id.id == 2">
                                         <td>
                                             <span t-field="line.tax_ids"/>
                                         </td>
-                                    </t>
-                                    <t t-if="o.company_id.id == 2">
                                         <td>
                                             <span t-field="line.debit"/>
                                         </td>
-                                    </t>
-                                    <t t-if="o.company_id.id == 2">
                                         <td>
                                             <span t-field="line.credit"/>
                                         </td>
-                                    </t>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <strong>Total:</strong>
+                                    </td>
+                                    <td width="10%">
+                                        <strong>
+                                            <span>
+                                                <t t-esc="o.get_credit_total()"/>
+                                            </span>
+                                        </strong>
+                                    </td>
+                                    <td width="10%">
+                                        <strong>
+                                            <span>
+                                                <t t-esc="o.get_debit_total()"/>
+                                            </span>
+                                        </strong>
+                                    </td>
                                 </tr>
-                                <!--                                <t t-set="total" t-value="total + line.debit"/>-->
-                                <!--                                <t t-set="total1" t-value="total1 + line.credit"/>-->
-                            </t>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    <strong>Total:</strong>
-                                </td>
-                                <td width="10%">
-                                    <strong>
-                                        <span>
-                                            <t t-esc="o.get_credit_total()"/>
-                                        </span>
-                                    </strong>
-                                </td>
-                                <td width="10%">
-                                    <strong>
-                                        <span>
-                                            <t t-esc="o.get_debit_total()"/>
-                                        </span>
-                                    </strong>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </t>
                     <br/>
                     <div class="row">
                         <div class="col-12">
