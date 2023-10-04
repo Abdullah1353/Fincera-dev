@@ -22,9 +22,20 @@ class AccountPayment(models.Model):
     total_amount = fields.Monetary(string="Total Amount", compute='_compute_total_amount', store=True)
 
     def get_formatted_total(self):
+        if self.amount and self.amount_withholding:
+            total = self.amount + self.amount_withholding
+        elif self.amount:
+            total = self.amount
         formatted_total = '{:,.2f}'.format(self.total_amount)
-        return f"{self.currency_id.symbol} {formatted_total}"
+        formatted_amount = '{:,.2f}'.format(total)
+        formatted_amount_withholding = '{:,.2f}'.format(self.amount_withholding)
+        record = {'formatted_total': f"{self.currency_id.symbol} {formatted_total}",
+                  'formatted_amount': f"{self.currency_id.symbol} {formatted_amount}",
+                  'formatted_amount_withholding': f"{self.currency_id.symbol} {formatted_amount_withholding}",
 
+                  }
+
+        return record
 
 # boolean = fields.Boolean(string='Boolean', compute='cheque_compute', store=True)
 #

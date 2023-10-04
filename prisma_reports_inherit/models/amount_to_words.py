@@ -21,3 +21,9 @@ class AccountPayment(models.Model):
         self.text_amount = ' '.join(elem.capitalize() for elem in self.text_amount.split())
         return
 
+
+class PurchaseOrder(models.Model):
+    _inherit = 'purchase.order'
+
+    def number_to_words(self, number):
+        return num2words(number, lang='en').title()

@@ -10,19 +10,41 @@
                             <div class="col-1">
                             </div>
                             <div class="col-10">
-                                <t t-if="doc.journal_id.type == 'bank'">
+                                <t t-if="doc.company_id.id == 2">
+
+                                    <t t-if="doc.journal_id.type == 'bank'">
+                                        <t t-if="doc.payment_type == 'outbound'">
+                                            <h2 align="center">
+                                                <u>Bank Payment Voucher</u>
+                                            </h2>
+                                        </t>
+                                        <t t-elif="doc.payment_type == 'inbound'">
+                                            <h2 align="center">
+                                                <u>Bank Receipt Voucher</u>
+                                            </h2>
+                                        </t>
+                                    </t>
+                                    <t t-if="doc.journal_id.type == 'cash'">
+                                        <t t-if="doc.payment_type == 'outbound'">
+                                            <h2 align="center">
+                                                <u>Cash Payment Voucher</u>
+                                            </h2>
+                                        </t>
+                                        <t t-elif="doc.payment_type == 'inbound'">
+                                            <h2 align="center">
+                                                <u>Cash Receipt Voucher</u>
+                                            </h2>
+                                        </t>
+                                    </t>
+                                    <t t-if="doc.journal_id.type == 'general'">
+                                        <h2 align="center">
+                                            <u>Journal Voucher</u>
+                                        </h2>
+                                    </t>
+                                </t>
+                                <t t-else="">
                                     <h2 align="center">
                                         <u>Bank Payment Voucher</u>
-                                    </h2>
-                                </t>
-                                <t t-if="doc.journal_id.type == 'cash'">
-                                    <h2 align="center">
-                                        <u>Cash Payment Voucher</u>
-                                    </h2>
-                                </t>
-                                <t t-if="doc.journal_id.type == 'general'">
-                                    <h2 align="center">
-                                        <u>Journal Voucher</u>
                                     </h2>
                                 </t>
                             </div>
@@ -74,8 +96,19 @@
                         <br/>
                         <div class="row">
                             <div class="col-12">
-                                <strong>Pay to</strong>&#160;&#160;&#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
-                                    t-field="doc.partner_id.name"/>
+                                <t t-if="doc.company_id.id == 2">
+                                    <t t-if="doc.payment_type == 'outbound'">
+                                        <strong>Pay to</strong>
+                                    </t>
+                                    <t t-elif="doc.payment_type == 'inbound'">
+                                        <strong>Receipt From</strong>
+                                    </t>&#160;&#160;&#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                        t-field="doc.partner_id.name"/>
+                                </t>
+                                <t t-else="">
+                                    <strong>Pay to</strong>&#160;&#160;&#160;&#160; &#160;&#160;&#160;&#160;&#160;&#160;&#160;<span
+                                        t-field="doc.partner_id.name"/>
+                                </t>
                             </div>
                         </div>
                         <div class="row">
@@ -94,7 +127,14 @@
                                 <tr>
                                     <th style="text-align:center;background-color:#f2f2f2;width:2%;">Sr.No.</th>
                                     <th style="text-align:center;background-color:#f2f2f2;width:50%;">Details</th>
-                                    <th style="text-align:center;background-color:#f2f2f2;width:20%;">Debit Account</th>
+                                    <t t-if="doc.company_id.id == 2">
+                                        <th style="text-align:center;background-color:#f2f2f2;width:20%;">Offset</th>
+                                    </t>
+                                    <t t-else="">
+                                        <th style="text-align:center;background-color:#f2f2f2;width:20%;">Debit
+                                            Account
+                                        </th>
+                                    </t>
                                     <th style="text-align:center;background-color:#f2f2f2;width:28%;" colspan="2">Amount
                                         (Rs.)
                                     </th>
@@ -118,8 +158,7 @@
                                         <span t-field="doc.journal_id.name"/>
                                     </td>
                                     <td style="text-align:center;width:60%">
-                                        <span t-esc="doc.amount + (doc.amount_withholding if doc.amount_withholding else 0)"/>
-
+                                        <span t-esc="doc.get_formatted_total().get('formatted_amount')"/>
                                     </td>
                                     <td style="text-align:center;width:40%;">
                                         <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
@@ -140,7 +179,7 @@
                                             </t>
                                         </td>
                                         <td style="text-align:center;width:60%">
-                                            <span t-field="doc.amount_withholding"/>
+                                            <span t-esc="doc.get_formatted_total().get('formatted_amount_withholding')"/>
                                         </td>
                                         <td style="text-align:center;width:40%;">
                                             <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
@@ -150,7 +189,7 @@
                                 <tr>
                                     <td style="text-align:right;" colspan="3">Total</td>
                                     <td style="text-align:center;width:60%;">
-                                        <span t-esc="doc.get_formatted_total()"/>
+                                        <span t-esc="doc.get_formatted_total().get('formatted_total')"/>
                                     </td>
                                     <td style="text-align:center;width:40%;">
                                         <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
@@ -177,6 +216,19 @@
                             </div>
                         </div>
                         <div class="footer">
+                            <t t-if="doc.company_id.id == 2">
+                                <div class="row">
+                                    <div class="col-4" align="center">
+                                        <b>
+                                            <t t-esc="doc.create_uid.name"/>
+                                        </b>
+                                    </div>
+                                    <div class="col-4" align="center">
+                                    </div>
+                                    <div class="col-4" align="center">
+                                    </div>
+                                </div>
+                            </t>
                             <div class="row">
                                 <div class="col-1"/>
                                 <div class="col-2" style="background-color:#000000;">
@@ -202,10 +254,10 @@
                                     <b>Prepared By</b>
                                 </div>
                                 <div class="col-4" align="center">
-                                    <b>Approved By</b>
+                                    <b>Checked By</b>
                                 </div>
                                 <div class="col-4" align="center">
-                                    <b>Received By</b>
+                                    <b>Approved By</b>
                                 </div>
                             </div>
 

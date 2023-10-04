@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <report
+                id="custom_report_purchase"
+                model="purchase.order"
+                string="Print Purchase Order"
+                report_type="qweb-pdf"
+                name="prisma_reports_inherit.report_purchase_template_custom"
+                file="prisma_reports_inherit.report_purchase_template_custom"
+                attachment_use="False"
+                menu="False"
+        />
+
+        <record id="view_purchase_form_custom" model="ir.ui.view">
+            <field name="name">view.purchase.form.custom</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="%(prisma_reports_inherit.custom_report_purchase)d"
+                            attrs="{'invisible': [('company_id', '!=', 2)]}" string="Print Print Purchase Order"
+                            type="action" icon="gtk-print"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
