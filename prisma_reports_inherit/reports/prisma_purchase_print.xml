@@ -3,26 +3,35 @@
 
     <template t-name="prisma_reports_inherit.report_purchase_template_custom_lang">
         <t t-call="web.external_layout">
-            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
-            <t t-set="address">
-                <div t-field="o.partner_id"
-                     t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
-                <p t-if="o.partner_id.vat"><t t-esc="o.company_id.account_fiscal_country_id.vat_label or 'Tax ID'"/>:
-                    <span t-field="o.partner_id.vat"/>
-                </p>
-            </t>
-            <t t-if="o.dest_address_id">
-                <t t-set="information_block">
-                    <strong>Shipping address:</strong>
-                    <div t-if="o.dest_address_id">
-                        <div t-field="o.dest_address_id"
-                             t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"
-                             name="purchase_shipping_address"/>
-                    </div>
+            <!--            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>-->
+            <!--            <t t-set="address">-->
+            <!--                <div t-field="o.partner_id"-->
+            <!--                     t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>-->
+            <!--                <p t-if="o.partner_id.vat"><t t-esc="o.company_id.account_fiscal_country_id.vat_label or 'Tax ID'"/>:-->
+            <!--                    <span t-field="o.partner_id.vat"/>-->
+            <!--                </p>-->
+            <!--            </t>-->
+            <!--            <t t-if="o.dest_address_id">-->
+            <!--                <t t-set="information_block">-->
+            <!--                    <strong>Shipping address:</strong>-->
+            <!--                    <div t-if="o.dest_address_id">-->
+            <!--                        <div t-field="o.dest_address_id"-->
+            <!--                             t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"-->
+            <!--                             name="purchase_shipping_address"/>-->
+            <!--                    </div>-->
 
-                </t>
-            </t>
+            <!--                </t>-->
+            <!--            </t>-->
             <div class="page">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                <t t-set="address">
+                    <div t-field="o.partner_id"
+                         t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+<!--                    <p t-if="o.partner_id.vat"><t t-esc="o.company_id.account_fiscal_country_id.vat_label or 'Tax ID'"/>-->
+<!--                        :-->
+<!--                        <span t-field="o.partner_id.vat"/>-->
+<!--                    </p>-->
+                </t>
                 <div class="oe_structure"/>
 
                 <h4 t-if="o.state in ['draft', 'sent', 'to approve']">Request for Quotation #
@@ -36,9 +45,12 @@
                 </h4>
 
                 <div id="delivery" class="row mt32 mb32">
-                    <div t-if="o.picking_type_id.warehouse_id.name" class="col-3 bm-2">
+                    <div t-if="o.picking_type_id.warehouse_id.name" class="col-12 bm-2">
                         <strong>Delivery To:</strong>
-                        <p t-field="o.picking_type_id.warehouse_id.name" class="m-0"/>
+                        <p t-field="o.picking_type_id.warehouse_id.partner_id.street" class="m-0"/>
+                        <p t-field="o.picking_type_id.warehouse_id.partner_id.street2" class="m-0"/>
+                        <p t-field="o.picking_type_id.warehouse_id.partner_id.city" class="m-0"/>
+                        <p t-field="o.picking_type_id.warehouse_id.partner_id.country_id.name" class="m-0"/>
                     </div>
                 </div>
                 <div id="informations" class="row mt32 mb32">

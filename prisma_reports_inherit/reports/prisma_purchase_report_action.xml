@@ -19,7 +19,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="%(prisma_reports_inherit.custom_report_purchase)d"
-                            attrs="{'invisible': [('company_id', '!=', 2)]}" string="Print Print Purchase Order"
+                            attrs="{'invisible': [('company_id', '!=', 2)]}" string="Print Purchase Order"
                             type="action" icon="gtk-print"/>
                 </xpath>
             </field>

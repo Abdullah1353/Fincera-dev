@@ -16,23 +16,42 @@
         </t>
         <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
             <div class="row">
-                <div class="col-4">
+                <div class="col-3">
                     <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
                          style="max-height: 80px;z-index: -1;position:relative;"
                          alt="Logo"/>
                 </div>
-                <div class="col-8">
-                    <h1>
-                        <t t-esc="company.name"/>
-                    </h1>
-                    <strong>
-                        <Strong>NTN:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;7936166-2</Strong>
-                        <br/>
-                        <Strong>STRN:&#160;&#160;&#160;&#160;&#160;&#160;3277876149298</Strong>
-                    </strong>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-12" align="center">
+                            <h1>
+                                Prisma Tech (Pvt) Ltd
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+
+                        </div>
+                        <div class="col-6">
+                            <Strong>&#160;&#160;NTN:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;7936166-2</Strong>
+                            <Strong>&#160;&#160;STRN:&#160;&#160;&#160;&#160;&#160;&#160;3277876149298</Strong>
+                        </div>
+                        <div class="col-3">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" align="center">
+                            <h1 t-if="doc.state not in ['draft','sent']">Sale order</h1>
+                            <h1 t-if="doc.state in ['draft','sent']">Quotation</h1>
+                        </div>
+                    </div>
                     <br/>
-                    <h1 t-if="doc.state not in ['draft','sent']">Sale order</h1>
-                    <h1 t-if="doc.state in ['draft','sent']">Quotation</h1>
+
+                </div>
+                <div class="col-3">
+
                 </div>
             </div>
             <hr/>
@@ -150,8 +169,8 @@
                         <tr>
                             <th name="th_description" class="text-left">#SR</th>
                             <th name="th_description" class="text-left">Description</th>
-                            <th name="th_quantity" class="text-right">Quantity</th>
-                            <th name="th_product_uom" class="text-right">UOM</th>
+                            <th name="th_quantity" class="text-left">Quantity</th>
+                            <th name="th_product_uom" class="text-left">UOM</th>
                         </tr>
                     </thead>
                     <tbody class="sale_tbody">
@@ -174,11 +193,11 @@
                                     <td name="td_name">
                                         <span t-field="line.name"/>
                                     </td>
-                                    <td name="td_quantity" class="text-right">
+                                    <td name="td_quantity" class="text-left">
                                         <span t-field="line.product_uom_qty"/>
                                         <t t-set="qty_total" t-value="qty_total + line.product_uom_qty"/>
                                     </td>
-                                    <td name="td_product_uom" class="text-right">
+                                    <td name="td_product_uom" class="text-left">
                                         <span t-field="line.product_uom"/>
                                     </td>
                                 </t>
@@ -190,7 +209,7 @@
                                     <strong>Total</strong>
                                 </td>
                                 <td></td>
-                                <td class="text-right">
+                                <td class="text-left">
                                     <strong>
                                         <t t-esc="qty_total"/>
                                     </strong>
